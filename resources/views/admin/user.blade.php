@@ -27,55 +27,43 @@
 
             <table class="table table-striped table-bordered ">
                 <thead>
-                    <th>
-                        #
-                    </th>
-                    <th>
-                        Nama
-                    </th>
-                    <th>
-                        Alamat
-                    </th>
-                    <th>
-                        No Hp
-                    </th>
-
-                    <th>
-                        Avatar
-                    </th>
-
-                    <th>
-                        Action
-                    </th>
-
+                <tr>
+                    <th width="50">#</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>No Hp</th>
+                    <th>Avatar</th>
+                    <th>Action</th>
+                </tr>
                 </thead>
 
-                <tr>
-                    <td>
-                        1
-                    </td>
-                    <td>
-                        Joko
-                    </td>
-                    <td>
-                        Jl. jl men
-                    </td>
-                    <td>
-                        081257182
-                    </td>
-                    <td>
-                        <img src="https://cdn-2.tstatic.net/palembang/foto/berita/2011/11/10/AVRIL.JPG"
-                            style="width: 75px; height: 100px; object-fit: cover" />
-                    </td>
-                    <td style="width: 150px">
-                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#tambahsiswa">Ubah</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="hapus('id', 'nama') ">hapus</button>
-                    </td>
-                </tr>
+                @forelse($data as $key => $d)
+                    <tr>
+                        <td>{{$data->firstItem() + $key}}</td>
+                        <td>{{$d->name}}</td>
+                        <td>{{$d->alamat}}</td>
+                        <td>{{$d->no_hp}}</td>
+                        <td width="100">
+                            <img src="{{$d->avatar}}" onerror="this.src='{{asset('/images/nouser.png')}}'; this.error=null"
+                                 style=" height: 100px; object-fit: cover"/>
+                        </td>
+                        <td style="width: 150px">
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#tambahsiswa">Ubah
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="hapus('id', 'nama') ">hapus</button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td class="text-center" colspan="6">Tidak ada data user</td>
+                    </tr>
+                @endforelse
 
             </table>
-
+            <div class="d-flex justify-content-end">
+                {{$data->links()}}
+            </div>
         </div>
 
 
@@ -84,13 +72,13 @@
 
             <!-- Modal Tambah-->
             <div class="modal fade" id="tambahsiswa" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Tambah Siswa</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                                    aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
@@ -162,18 +150,18 @@
 
 @section('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
         })
 
         function hapus(id, name) {
             swal({
-                    title: "Menghapus data?",
-                    text: "Apa kamu yakin, ingin menghapus data ?!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
+                title: "Menghapus data?",
+                text: "Apa kamu yakin, ingin menghapus data ?!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
                 .then((willDelete) => {
                     if (willDelete) {
                         swal("Berhasil Menghapus data!", {

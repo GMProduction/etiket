@@ -34,41 +34,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.dashboard');
+Route::prefix('/')->group(function (){
+    Route::get('/', function () {
+        return view('admin.dashboard');
+    });
+
+    Route::get('user', [\App\Http\Controllers\Admin\UserController::class, 'index']);
+
+    Route::get('kapal', function () {
+        return view('admin.kapal');
+    });
+
+    Route::get('transaksi', function () {
+        return view('admin.transaksi');
+    });
+
+    Route::get('laporantransaksi', function () {
+        return view('admin.laporantransaksi');
+    });
+
+    Route::get('laporanpemasukan', function () {
+        return view('admin.laporanpemasukan');
+    });
+
+
+    Route::get('cetaklaporantransaksi', [LaporanController::class, 'cetakLaporanTransaksi']);
+    Route::get('cetaklaporanpendapatan', [LaporanController::class, 'cetakLaporanPemasukan']);
+
 });
-
-Route::get('/admin', function () {
-    return view('admin');
-});
-
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-});
-
-Route::get('/admin/user', function () {
-    return view('admin.user');
-});
-
-Route::get('/admin/kapal', function () {
-    return view('admin.kapal');
-});
-
-Route::get('/admin/transaksi', function () {
-    return view('admin.transaksi');
-});
-
-Route::get('/admin/laporantransaksi', function () {
-    return view('admin.laporantransaksi');
-});
-
-Route::get('/admin/laporanpemasukan', function () {
-    return view('admin.laporanpemasukan');
-});
-
-
-Route::get('/admin/cetaklaporantransaksi', [LaporanController::class, 'cetakLaporanTransaksi']);
-Route::get('/admin/cetaklaporanpendapatan', [LaporanController::class, 'cetakLaporanPemasukan']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);
