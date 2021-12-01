@@ -21,8 +21,8 @@ class CreatePesanansTable extends Migration
             $table->bigInteger('id_jadwal')->unsigned()->nullable(true);
             $table->foreign('id_jadwal')->references('id')->on('jadwals');
             $table->integer('harga');
-            $table->string('kode_tiket');
-            $table->tinyInteger('status');
+            $table->string('kode_tiket')->default(null)->nullable(true);
+            $table->tinyInteger('status')->default(0);
             $table->bigInteger('id_pembayaran')->unsigned()->nullable(true);
             $table->foreign('id_pembayaran')->references('id')->on('pembayarans');
             $table->timestamps();

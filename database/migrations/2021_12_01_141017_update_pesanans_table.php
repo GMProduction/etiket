@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePembayaransTable extends Migration
+class UpdatePesanansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreatePembayaransTable extends Migration
      */
     public function up()
     {
-        Schema::create('pembayarans', function (Blueprint $table) {
-            $table->id();
-            $table->text('bukti_transfer')->default(null)->nullable(true);
-            $table->integer('total_harga');
-            $table->timestamps();
+        Schema::table('pesanans', function (Blueprint $table) {
+            //
+            $table->date('tanggal')->default(null)->nullable(true)->after('harga');
         });
     }
 
@@ -28,6 +26,8 @@ class CreatePembayaransTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pembayarans');
+        Schema::table('pesanans', function (Blueprint $table) {
+            //
+        });
     }
 }

@@ -53,6 +53,20 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'kapal' => [
+            'driver' => 'local',
+            'root' => public_path() . '/images/kapal',
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        'avatar' => [
+            'driver' => 'local',
+            'root' => public_path() . '/images/avatar',
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*

@@ -23,7 +23,7 @@ class UserController extends Controller
         $field = \request()->validate(
             [
                 'username' => 'required',
-                'nama'     => 'required',
+                'name'     => 'required',
                 'password' => 'required|confirmed',
                 'alamat'   => 'required',
                 'no_hp'    => 'required',

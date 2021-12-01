@@ -39,15 +39,23 @@ Route::prefix('/')->group(function (){
         return view('admin.dashboard');
     });
 
-    Route::get('user', [\App\Http\Controllers\Admin\UserController::class, 'index']);
+   Route::prefix('user')->group(function (){
+       Route::get('', [\App\Http\Controllers\Admin\UserController::class, 'index']);
+       Route::post('register', [AuthController::class, 'register']);
+   });
+    Route::match(['POST','GET'],'pelabuhan', [\App\Http\Controllers\Admin\PelabuhanController::class, 'index']);
 
-    Route::get('kapal', function () {
-        return view('admin.kapal');
+    Route::prefix('kapal')->group(function (){
+        Route::match(['POST', 'GET'], '', [\App\Http\Controllers\Admin\KapalController::class, 'index']);
+        Route::get('pelabuhan-asal',[\App\Http\Controllers\Admin\KapalController::class, 'getPelabuhanAsal'])->name('pelabuhan-asal');
+        Route::get('pelabuhan-tujuan',[\App\Http\Controllers\Admin\KapalController::class, 'getPelabuhanTujuan'])->name('pelabuhan-tujuan');
+        Route::get('jadwal/{id}', [\App\Http\Controllers\Admin\JadwalController::class, 'show']);
+        Route::post('jadwal/{id}', [\App\Http\Controllers\Admin\JadwalController::class, 'store']);
+        Route::get('jadwal/delete/{id}', [\App\Http\Controllers\Admin\JadwalController::class, 'delete']);
     });
 
-    Route::get('transaksi', function () {
-        return view('admin.transaksi');
-    });
+    Route::get('transaksi', [\App\Http\Controllers\Admin\TransaksiController::class,'index']);
+    Route::get('transaksi/{id}', [\App\Http\Controllers\Admin\TransaksiController::class,'show']);
 
     Route::get('laporantransaksi', function () {
         return view('admin.laporantransaksi');

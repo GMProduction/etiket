@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Pelabuhan extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+      'nama',
+      'kota'
+    ];
 }

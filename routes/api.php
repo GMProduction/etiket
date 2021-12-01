@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+Route::post('/login',[\App\Http\Controllers\AuthController::class,'login']);
+Route::post('/register',[\App\Http\Controllers\AuthController::class,'register']);
+
+Route::prefix('user')->middleware(['auth:sanctum'])->group(function (){
+    Route::match(['POST','GET'],'profile', [\App\Http\Controllers\Api\UserController::class,'index']);
+    Route::post('profile/avatar', [\App\Http\Controllers\Api\UserController::class,'avatar']);
+
+    Route::get('cari', [\App\Http\Controllers\Api\KapalController::class,'cariTanggal']);
+
+    Route::match(['POST','GET'],'pesanan', [\App\Http\Controllers\Api\TransaksiController::class, 'index']);
+    Route::get('pesanan/delete/{id}', [\App\Http\Controllers\Api\TransaksiController::class, 'delete']);
+    Route::get('pesanan/checkout', [\App\Http\Controllers\Api\TransaksiController::class, 'checkout']);
 });
+
