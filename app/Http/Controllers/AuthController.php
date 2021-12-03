@@ -77,17 +77,17 @@ class AuthController extends Controller
         );
 
         $user = User::where('username', '=', $field['username'])->first();
-        if ( ! $user || ! Hash::check($field['password'], $user->password) || ! $user->roles) {
+        if ( ! $user || ! Hash::check($field['password'], $user->password) || ! $user->role) {
             return response()->json(
                 [
-                    'msg' => 'Login gagal',
+                    'msg' => $user,
                 ],
                 401
             );
         }
 
         $user->tokens()->delete();
-        $token = $user->createToken($user->roles,[$user->roles])->plainTextToken;
+        $token = $user->createToken($user->role,[$user->role])->plainTextToken;
         $user->update(
             [
                 'token' => $token,
@@ -99,7 +99,7 @@ class AuthController extends Controller
                 'status' => 200,
                 'data'   => [
                     'token' => $token,
-                    'roles' => $user->roles,
+                    'roles' => $user->role,
                 ],
             ]
         );
