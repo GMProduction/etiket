@@ -29,6 +29,7 @@ Route::prefix('user')->middleware(['auth:sanctum'])->group(function (){
     Route::match(['POST','GET'],'profile', [\App\Http\Controllers\Api\UserController::class,'index']);
     Route::post('profile/avatar', [\App\Http\Controllers\Api\UserController::class,'avatar']);
 
+    Route::get('pelabuhan',[\App\Http\Controllers\Api\KapalController::class, 'pelabuhan']);
     Route::get('kapal',[\App\Http\Controllers\Api\KapalController::class, 'index']);
     Route::get('kapal/{id}',[\App\Http\Controllers\Api\KapalController::class, 'show']);
 

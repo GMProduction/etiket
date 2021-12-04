@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Jadwal;
 use App\Models\MasterKapal;
+use App\Models\Pelabuhan;
 use Illuminate\Http\Request;
 
 class KapalController extends Controller
@@ -38,6 +39,11 @@ class KapalController extends Controller
 
     public function show($id){
         return Jadwal::with(['kapal','asal','tujuan'])->find($id);
+    }
+
+    public function pelabuhan(){
+        $data = Pelabuhan::where('id','!=', \request('id'))->get();
+        return $data;
     }
 
 //    public function cariTanggal(){
