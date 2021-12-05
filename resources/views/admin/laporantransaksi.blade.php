@@ -53,64 +53,35 @@
 
             <table class="table table-striped table-bordered ">
                 <thead>
-                    <th>
-                        #
-                    </th>
-
-                    <th>
-                        Nama Pelanggan
-                    </th>
-
-                    <th>
-                        Kapal
-                    </th>
-
-                    <th>
-                        Tanggal
-                    </th>
-
-                    <th>
-                        Tujuan
-                    </th>
-
-                    <th>
-                        Status Pembayaran
-                    </th>
-
-                    
-
+                    <tr>
+                        <th>#</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Kapal</th>
+                        <th>Tanggal</th>
+                        <th>Tujuan</th>
+                        <th>Status</th>
+                    </tr>
                 </thead>
 
-                <tr>
-                    <td>
-                        1
-                    </td>
-
-                    <td>
-                        Ayu
-                    </td>
-                    <td>
-                        Mazda hijau
-                    </td>
-
-                    <td>
-                        12 September 2019
-                    </td>
-
-                    <td>
-                        Jepara - Karimun
-                    </td>
-
-                    <td>
-                        Menunggu Konfirmasi
-                    </td>
-
-                
-                  
-                </tr>
+                @forelse($data as $key => $d)
+                    <tr>
+                        <td>{{$data->firstItem() + $key}}</td>
+                        <td>{{$d->nama}}</td>
+                        <td>{{$d->jadwal->kapal->nama}}</td>
+                        <td>{{date('l, d F Y', strtotime($d->tanggal))}} Jam {{date('H:i', strtotime($d->jadwal->jam))}}</td>
+                        <td>{{$d->jadwal->asal->nama}} - {{$d->jadwal->tujuan->nama}}</td>
+                        <td>{{$d->status == 1 ? 'Menunggu Checkin' : 'Sudah Checkin'}}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td class="text-center" colspan="6">Tidak ada data</td>
+                    </tr>
+                @endforelse
 
             </table>
-
+            <div class="d-flex justify-content-end">
+                {{$data->links()}}
+            </div>
         </div>
 
     </section>
@@ -125,7 +96,7 @@
             });
         });
         $(document).on('click', '#cetak', function() {
-            $(this).attr('href', '/admin/cetaklaporantransaksi?' + $('#formTanggal').serialize());
+            $(this).attr('href', '/cetaklaporantransaksi?' + $('#formTanggal').serialize());
         })
     </script>
 

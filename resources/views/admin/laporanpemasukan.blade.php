@@ -25,10 +25,10 @@
                         <div class="me-2">
                             <div class="input-group input-daterange">
                                 <input type="text" class="form-control me-2" name="start" style="background-color: white"
-                                    readonly value="{{ request('start') }}" required>
+                                       readonly value="{{ request('start') }}" required>
                                 <div class="input-group-addon">to</div>
                                 <input type="text" class="form-control ms-2" name="end" style="background-color: white"
-                                    readonly value="{{ request('end') }}" required>
+                                       readonly value="{{ request('end') }}" required>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success mx-2">Cari</button>
@@ -40,62 +40,31 @@
 
             <table class="table table-striped table-bordered ">
                 <thead>
-                    <th>
-                        #
-                    </th>
-
-                    <th>
-                        Nama Pelanggan
-                    </th>
-
-                    <th>
-                        Kapal
-                    </th>
-
-                    <th>
-                        Tanggal
-                    </th>
-
-                    <th>
-                        Tujuan
-                    </th>
-
-                    <th>
-                        Harga
-                    </th>
-
-
-
-                </thead>
-
                 <tr>
-                    <td>
-                        1
-                    </td>
-
-                    <td>
-                        Ayu
-                    </td>
-                    <td>
-                        Siginjai
-                    </td>
-
-                    <td>
-                        12 September 2019
-                    </td>
-                    <td>
-                        Jepara - Karimun
-                    </td>
-
-                    <td>
-                        Rp 200.000
-                    </td>
-
-
-
+                    <th>#</th>
+                    <th>Nama Pelanggan</th>
+                    <th>Tanggal</th>
+                    <th>Harga</th>
                 </tr>
+                </thead>
+                @forelse($data as $key => $d)
+
+                    <tr>
+                        <td>{{$data->firstItem() + $key}}</td>
+                        <td>{{$d->user->name}}</td>
+                        <td>{{date('d F Y', strtotime($d->updated_at))}}</td>
+                        <td>Rp. {{number_format($d->total_harga,0)}}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td class="text-center" colspan="4">Tidak ada data</td>
+                    </tr>
+                @endforelse
 
             </table>
+            <div class="d-flex justify-content-end">
+                {{$data->links()}}
+            </div>
 
         </div>
 
@@ -105,13 +74,13 @@
 
 @section('script')
     <script>
-        $('.input-daterange input').each(function() {
+        $('.input-daterange input').each(function () {
             $(this).datepicker({
                 format: "dd-mm-yyyy"
             });
         });
-        $(document).on('click', '#cetak', function() {
-            $(this).attr('href', '/admin/cetaklaporanpendapatan?' + $('#formTanggal').serialize());
+        $(document).on('click', '#cetak', function () {
+            $(this).attr('href', '/cetaklaporanpendapatan?' + $('#formTanggal').serialize());
         })
     </script>
 

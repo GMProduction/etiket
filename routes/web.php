@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('/')->group(function (){
+Route::prefix('/')->middleware(\App\Http\Middleware\Authenticate::class)->group(function (){
     Route::get('/', function () {
         return view('admin.dashboard');
     });
@@ -55,25 +55,21 @@ Route::prefix('/')->group(function (){
     });
 
     Route::get('transaksi', [\App\Http\Controllers\Admin\TransaksiController::class,'index']);
-    Route::get('transaksi/{id}', [\App\Http\Controllers\Admin\TransaksiController::class,'show']);
+    Route::match(['POST','GET'],'transaksi/{id}', [\App\Http\Controllers\Admin\TransaksiController::class,'show']);
 
-    Route::get('laporantransaksi', function () {
-        return view('admin.laporantransaksi');
-    });
+    Route::get('laporantransaksi', [\App\Http\Controllers\Admin\LaporanTransaksi::class,'index']);
 
-    Route::get('laporanpemasukan', function () {
-        return view('admin.laporanpemasukan');
-    });
+    Route::get('laporanpemasukan', [\App\Http\Controllers\Admin\LaporanPemasukan::class,'index']);
 
 
-    Route::get('cetaklaporantransaksi', [LaporanController::class, 'cetakLaporanTransaksi']);
-    Route::get('cetaklaporanpendapatan', [LaporanController::class, 'cetakLaporanPemasukan']);
+    Route::get('cetaklaporantransaksi', [\App\Http\Controllers\Admin\LaporanTransaksi::class, 'cetakLaporanTransaksi']);
+    Route::get('cetaklaporanpendapatan', [\App\Http\Controllers\Admin\LaporanPemasukan::class, 'cetakLaporanPemasukan']);
 
 });
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::match(['POST','GET'],'/login', [AuthController::class, 'loginweb'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout']);
-Route::post('/register-member', [AuthController::class, 'registerMember']);
+//Route::post('/register-member', [AuthController::class, 'registerMember']);
 
 // Route::prefix('/user')->middleware(UserMiddleware::class)->group(function (){
 //     Route::get('/', function () {

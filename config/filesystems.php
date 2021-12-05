@@ -67,6 +67,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'imgPayment' => [
+            'driver' => 'local',
+            'root' => public_path() . '/images/payment',
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helper\CustomController;
 use App\Http\Controllers\Controller;
 use App\Models\Jadwal;
 use App\Models\Pembayaran;
@@ -11,7 +12,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 
-class TransaksiController extends Controller
+class TransaksiController extends CustomController
 {
     //
     public function index(){
@@ -70,6 +71,36 @@ class TransaksiController extends Controller
     }
 
     public function pembayaran(){
-//        Pembayaran::where
+        $data = Pembayaran::with('pesanan')->where('id_user','=', \auth()->id())->get();
+        return $data;
     }
+
+    public function pembayaranDetail($id){
+
+        $data = Pembayaran::with('pesanan')->where([['id_user','=', \auth()->id()],['id','=',$id]])->first();
+        if (\request()->isMethod('POST')){
+            return $this->storeImgPayment($data);
+        }
+        return $data;
+    }
+
+    public function storeImgPayment($data){
+        \request()->validate([
+            'image' => 'required|image'
+        ]);
+
+        if ($data->bukti_transfer) {
+            $this->unlinkFile($data, 'bukti_transfer');
+        }
+        $textImg = $this->generateImageName('image');
+        $string  = '/images/payment/'.$textImg;
+        $this->uploadImage('image', $textImg, 'imgPayment');
+        $data->update([
+            'bukti_transfer' => $string,
+            'status' => 0
+        ]);
+
+        return $data;
+    }
+
 }

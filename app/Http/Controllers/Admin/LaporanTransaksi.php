@@ -1,25 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pesanan;
 use Illuminate\Http\Request;
 
-class LaporanController extends Controller
+class LaporanTransaksi extends Controller
 {
-
+    //
     public function pesanan()
     {
-        $pesanan = Pesanan::where('kode_tiket', '!=', null);
+        $pesanan = Pesanan::with('jadwal.kapal')->where('kode_tiket', '!=', null);
         if (\request('start')) {
             $start = date('Y-m-d', strtotime(\request('start')));
             $end   = date('Y-m-d', strtotime(\request('end')));
             $pesanan->whereBetween('tanggal', [$start, $end]);
         }
-        $pesanan = $pesanan->get();
+        $pesanan = $pesanan->paginate(10);
 
         return $pesanan;
+    }
+
+    public function index(){
+
+        return view('admin.laporantransaksi')->with(['data' => $this->pesanan()]);
     }
 
     public function cetakLaporanTransaksi()
@@ -42,24 +47,5 @@ class LaporanController extends Controller
         return view('admin/cetaktransaksi')->with($data);
     }
 
-    public function cetakLaporanPemasukan()
-    {
-        $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadHTML($this->dataPemasukan())->setPaper('f4', 'potrait');
-
-        return $pdf->stream();
-    }
-
-    public function dataPemasukan()
-    {
-
-        $data = [
-            'data'  => "data",
-            'start' => "2012-01-01",
-            'end'   => "2012-01-01",
-        ];
-
-        return view('admin/cetakpemasukan')->with($data);
-    }
 
 }

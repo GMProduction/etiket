@@ -38,27 +38,27 @@
 
             <table class="table table-striped table-bordered ">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nama Pelanggan</th>
-                        <th>Kapal</th>
-                        <th>Tanggal</th>
-                        <th>Status Pembayaran</th>
-                        <th>Action</th>
-                    </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Nama Pelanggan</th>
+                    <th>Kapal</th>
+                    <th>Tanggal</th>
+                    <th>Status Pembayaran</th>
+                    <th>Action</th>
+                </tr>
                 </thead>
                 @forelse($data as $key => $d)
-                <tr>
-                    <td>{{$data->firstItem() + $key}}</td>
-                    <td>{{$d->user->name}}</td>
-                    <td>{{$d->pesanan[0]->jadwal->kapal->nama}}</td>
-                    <td>{{$d->pesanan[0]->tanggal}}</td>
-                    <td>{{$d->status}}</td>
-                    <td style="width: 150px">
-                        <a class="btn btn-success btn-sm" data-id="{{$d->id}}"
-                            id="detailData">Detail</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>{{$data->firstItem() + $key}}</td>
+                        <td>{{$d->user->name}}</td>
+                        <td>{{$d->pesanan[0]->jadwal->kapal->nama}}</td>
+                        <td>{{$d->pesanan[0]->tanggal}}</td>
+                        <td>{{$d->status == 0 ? 'Menunggu' : ($d->status == 1 ? 'Diterima' : 'Ditolak') }}</td>
+                        <td style="width: 150px">
+                            <a class="btn btn-success btn-sm" data-id="{{$d->id}}"
+                               id="detailData">Detail</a>
+                        </td>
+                    </tr>
                 @empty
                     <tr>
                         <td colspan="5" class="text-center">Tidak ada data user</td>
@@ -82,7 +82,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="detail1">Detail Transaksi</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                                    aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
 
@@ -119,7 +119,7 @@
 
                                         <tr>
                                             <th>Kapasitas</th>
-                                            <td><span class="ms-1"> :</span> </td>
+                                            <td><span class="ms-1"> :</span></td>
                                             <td><span class="ms-3" id="kKapal">200</span>
                                             </td>
                                         </tr>
@@ -177,11 +177,11 @@
                                             <td><span class="ms-1"> :</span></td>
                                             <td>
                                                 <span class="ms-3 mb-1"><a id="imgPay" target="_blank"
-                                                        style="cursor: pointer; display: inline_block"
-                                                        href=""><img
+                                                                           style="cursor: pointer; display: inline_block"
+                                                                           href=""><img
                                                             class="mb-1"
                                                             src=""
-                                                            width="50px" /></a></span>
+                                                            width="50px"/></a></span>
                                             </td>
                                         </tr>
 
@@ -189,16 +189,21 @@
                                             <th>Action</th>
                                             <td><span class="ms-1"> :</span></td>
                                             <td>
-                                                <span class="ms-3"><a
-                                                        class="btn btn-primary btn-sm">Terima</a></span>
-                                                <span class="ms-1"><a
-                                                        class="btn btn-danger btn-sm">Tolak</a></span>
+                                                <div id="btnKonfirm">
+                                                    <span class="ms-3"><a
+                                                            class="btn btn-primary btn-sm" onclick="konfirmasi(1)">Terima</a></span>
+                                                    <span class="ms-1"><a
+                                                            class="btn btn-danger btn-sm" onclick="konfirmasi(2)">Tolak</a></span>
+                                                </div>
+                                                <div id="labelStatus">
+                                                    <span>-</span>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>Status Bayar</th>
                                             <td><span class="ms-1"> :</span></td>
-                                            <td><span class="ms-3">Menunggu Konfirmasi </span></td>
+                                            <td><span class="ms-3" id="txtStatus"> </span></td>
                                         </tr>
 
                                         <div class="mb-4"></div>
@@ -212,61 +217,6 @@
                 </div>
             </div>
 
-            <!-- Modal Tambah-->
-            <div class="modal fade" id="tambahsiswa" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Tambah Data</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-
-                                <div class="mb-3">
-                                    <label for="tanggal_pembelian" class="form-label">Tanggal Pembelian</label>
-                                    <input type="date" class="form-control " name="tanggal_pembelian"
-                                        id="tanggal_pembelian" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="alamat">Keterangan</label>
-                                    <textarea class="form-control" id="alamat" rows="3"></textarea>
-                                </div>
-
-
-                                <div class="mt-3 mb-2">
-                                    <label for="foto" class="form-label">Foto</label>
-                                    <input class="form-control" type="file" id="foto">
-                                </div>
-
-                                <hr>
-
-
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <div class="d-flex">
-                                        <select class="form-select" aria-label="Default select example" name="status">
-                                            <option selected>Pilih Status</option>
-                                            <option value="1">Belum Di Proses</option>
-                                            <option value="2">Dalam Proses Pembangunan</option>
-                                            <option value="3">Selesai</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="mb-4"></div>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-
 
         </div>
 
@@ -276,49 +226,89 @@
 
 @section('script')
     <script>
-        $(document).ready(function() {
+        var idPayment;
+        $(document).ready(function () {
 
         })
 
         $(document).on('click', '#detailData', function () {
-            $('#detail').modal('show')
-            dataDetail($(this).data('id'))
+            $('#detail').modal('show');
+            idPayment = $(this).data('id');
+            dataDetail(idPayment);
         })
 
         function dataDetail(id) {
-            fetch(window.location.pathname+'/'+id)
-            .then(response => response.json())
-            .then((data) => {
-                $('#detail #nPelanggan').html(data.user.name);
-                $('#detail #alPelanggan').html(data.user.alamat);
-                $('#detail #hpPelanggan').html(data.user.no_hp);
-                $('#detail #nKapal').html(data.pesanan[0].jadwal.kapal.nama);
-                $('#detail #kKapal').html(data.pesanan[0].jadwal.kapal.kapasitas);
-                $('#detail #ketKapal').html(data.pesanan[0].jadwal.kapal.keterangan);
-                $('#detail #tBerangkat').html((data.pesanan[0].tanggal).toLocaleString());
-                $('#detail #rute').html(data.pesanan[0].jadwal.asal.nama+' - '+data.pesanan[0].jadwal.tujuan.nama);
-                $('#detail #tBiaya').html('Rp. '+(data.total_harga).toLocaleString());
-                $('#detail #imgPay').attr('href', data.bukti_transfer);
-                $('#tbPemesan').empty();
-                $.each(data.pesanan, function (k, v) {
-                    $('#tbPemesan').append('<tr>' +
-                        '<td>'+parseInt(k+1)+'</td>' +
-                        '<td>'+v.nama+'</td>' +
-                        '<td>'+(v.kode_tiket ?? '-')+'</td>' +
-                        '</tr>')
+            fetch(window.location.pathname + '/' + id)
+                .then(response => response.json())
+                .then((data) => {
+                    console.log(data);
+                    $('#detail #nPelanggan').html(data.user.name);
+                    $('#detail #alPelanggan').html(data.user.alamat);
+                    $('#detail #hpPelanggan').html(data.user.no_hp);
+                    $('#detail #nKapal').html(data.pesanan[0].jadwal.kapal.nama);
+                    $('#detail #kKapal').html(data.pesanan[0].jadwal.kapal.kapasitas);
+                    $('#detail #ketKapal').html(data.pesanan[0].jadwal.kapal.keterangan);
+                    $('#detail #tBerangkat').html((data.pesanan[0].tanggal).toLocaleString());
+                    $('#detail #rute').html(data.pesanan[0].jadwal.asal.nama + ' - ' + data.pesanan[0].jadwal.tujuan.nama);
+                    $('#detail #tBiaya').html('Rp. ' + (data.total_harga).toLocaleString());
+                    $('#detail #imgPay').attr('href', data.bukti_transfer);
+                    $('#detail #imgPay img').attr('src', data.bukti_transfer);
+                    var status = data.status;
+
+                    $('#detail #btnKonfirm').addClass('d-none');
+                    $('#detail #labelStatus').removeClass('d-none');
+
+                    if (status === 0) {
+                        $('#detail #txtStatus').html('Menunggu Pembayaran');
+                        if (data.bukti_transfer) {
+                            $('#detail #txtStatus').html('Menunggu Konfirmasi');
+                            $('#detail #btnKonfirm').removeClass('d-none');
+                            $('#detail #labelStatus').addClass('d-none');
+                        }
+                    } else if (status === 1) {
+                        $('#detail #txtStatus').html('Pembayaran Diterima');
+                    } else {
+                        $('#detail #txtStatus').html('Pembayaran Ditolak');
+                    }
+                    $('#tbPemesan').empty();
+                    $.each(data.pesanan, function (k, v) {
+                        $('#tbPemesan').append('<tr>' +
+                            '<td>' + parseInt(k + 1) + '</td>' +
+                            '<td>' + v.nama + '</td>' +
+                            '<td>' + (v.kode_tiket ?? '-') + '</td>' +
+                            '</tr>')
+                    })
+                    console.log(data)
                 })
-                console.log(data)
-            })
+        }
+
+        function konfirmasi(a) {
+            var dataForm = {
+                status: a,
+                '_token': '{{csrf_token()}}'
+            };
+            var title = 'Tolak'
+            if (a === 1) {
+                title = 'Terima'
+            }
+
+            saveDataObject(title + ' Pembayaran', dataForm, '/transaksi/' + idPayment, afterKonfirmasi)
+            return false;
+        }
+
+        function afterKonfirmasi() {
+            dataDetail(idPayment);
+
         }
 
         function hapus(id, name) {
             swal({
-                    title: "Menghapus data?",
-                    text: "Apa kamu yakin, ingin menghapus data ?!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
+                title: "Menghapus data?",
+                text: "Apa kamu yakin, ingin menghapus data ?!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
                 .then((willDelete) => {
                     if (willDelete) {
                         swal("Berhasil Menghapus data!", {

@@ -36,5 +36,10 @@ Route::prefix('user')->middleware(['auth:sanctum'])->group(function (){
     Route::match(['POST','GET'],'pesanan', [\App\Http\Controllers\Api\TransaksiController::class, 'index']);
     Route::get('pesanan/delete/{id}', [\App\Http\Controllers\Api\TransaksiController::class, 'delete']);
     Route::get('pesanan/checkout', [\App\Http\Controllers\Api\TransaksiController::class, 'checkout']);
+    Route::get('pembayaran', [\App\Http\Controllers\Api\TransaksiController::class, 'pembayaran']);
+    Route::match(['POST','GET'],'pembayaran/{id}', [\App\Http\Controllers\Api\TransaksiController::class, 'pembayaranDetail']);
 });
 
+Route::prefix('agen')->middleware(['auth:sanctum'])->group(function (){
+    Route::get('scan-qr', [\App\Http\Controllers\Api\ChekinController::class, 'scanQr']);
+});
