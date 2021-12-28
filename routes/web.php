@@ -66,7 +66,6 @@ Route::prefix('/')->middleware(\App\Http\Middleware\Authenticate::class)->group(
     Route::get('cetaklaporanpendapatan', [\App\Http\Controllers\Admin\LaporanPemasukan::class, 'cetakLaporanPemasukan']);
 
 });
-
 Route::match(['POST','GET'],'/login', [AuthController::class, 'loginweb'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout']);
 //Route::post('/register-member', [AuthController::class, 'registerMember']);
