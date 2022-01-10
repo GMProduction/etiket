@@ -42,4 +42,8 @@ Route::prefix('user')->middleware(['auth:sanctum'])->group(function (){
 
 Route::prefix('agen')->middleware(['auth:sanctum'])->group(function (){
     Route::get('scan-qr', [\App\Http\Controllers\Api\ChekinController::class, 'scanQr']);
+    Route::get('kapal',[\App\Http\Controllers\Api\ChekinController::class,'dataKapal']);
+    Route::get('penumpang/{idJadwal}',[\App\Http\Controllers\Api\ChekinController::class,'dataPenumpang']);
+
+
 });
