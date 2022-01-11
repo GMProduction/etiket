@@ -71,7 +71,7 @@ class TransaksiController extends CustomController
     }
 
     public function pembayaran(){
-        $data = Pembayaran::with('pesanan')->where('id_user','=', \auth()->id())->get();
+        $data = Pembayaran::with('pesanan.jadwal.kapal')->where('id_user','=', \auth()->id())->get();
         return $data;
     }
 
