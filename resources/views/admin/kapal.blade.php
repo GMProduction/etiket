@@ -134,13 +134,13 @@
                                             <label for="nama" class="form-label">Hari</label>
                                             <select class="form-select txtJadwal" id="hari" name="hari">
                                                 <option value="" selected disabled></option>
-                                                <option value="0">Senin</option>
-                                                <option value="1">Selasa</option>
-                                                <option value="2">Rabu</option>
-                                                <option value="3">Kamis</option>
-                                                <option value="4">Jum'at</option>
-                                                <option value="5">Sabtu</option>
-                                                <option value="6">Minggu</option>
+                                                <option value="1">Senin</option>
+                                                <option value="2">Selasa</option>
+                                                <option value="3">Rabu</option>
+                                                <option value="4">Kamis</option>
+                                                <option value="5">Jum'at</option>
+                                                <option value="6">Sabtu</option>
+                                                <option value="0">Minggu</option>
                                             </select>
                                         </div>
 
@@ -252,7 +252,7 @@
                 $('#tbJadwal').empty();
                 if (data.length > 0){
                     $.each(data, function (k, v) {
-                        var hariData = ['Senin','Selasa', 'Rabu', 'Kamis', 'Jum\'at', 'Sabtu', 'Minggu'];
+                        var hariData = ['Minggu','Senin','Selasa', 'Rabu', 'Kamis', 'Jum\'at', 'Sabtu'];
                         var hari = hariData[v['hari']]
                         $('#tbJadwal').append('<tr>' +
                             '<td>'+parseInt(k+1)+'</td>' +
